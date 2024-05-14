@@ -47,7 +47,7 @@ export const Home = ()=> {
       ];
   return (
     <div style={{ justifyContent:'center', height: 400, width: '90%', margin:"100px"}}>
-        <h3>User Data</h3>
+        <h3>User Data  <Button type="submit" variant="contained" color="primary" sx={{mx:"200px"}} onClick={()=>navigate('/adduser')}>Add User</Button></h3> 
       <DataGrid
         rows={user}
         columns={columns}
@@ -58,7 +58,8 @@ export const Home = ()=> {
         }}
         pageSizeOptions={[5, 10]}
       />
-         <Button type='primary' onClick={()=>navigate('/adduser')}>Add User</Button>
+       
+      
     </div>
   );
 }

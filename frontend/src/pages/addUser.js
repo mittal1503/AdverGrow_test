@@ -4,22 +4,24 @@ import {useForm} from 'react-hook-form';
 import {useNavigate} from'react-router-dom';
 import { useUser } from '../context/Usercontext';
 import { styled } from '@mui/system';
-
+import { useSelector ,useDispatch} from 'react-redux';
+import { setUser ,addUser} from '../features/userSlice';
 const Span = styled('span')({
   color: 'red'
 });
 
 export const Adduser = () => {
-    const { user, setUser } = useUser();
+    const user = useSelector((state)=>state.users.user)
+    const dispatch = useDispatch();
     const{register,handleSubmit,formState:{errors}} = useForm();
     const navigate = useNavigate();   
 
     const onSubmit =(data)=>{
         const maxId = user.reduce((max, user) => Math.max(max, user.id), 0);
         const newUserId = maxId + 1; 
-        const newUser = { id: newUserId, ...data }; 
-        setUser((prevUsers) => [...prevUsers, newUser]); 
-        console.log("user",user)
+        const User = { id: newUserId, ...data }; 
+        dispatch(addUser(User))
+   
         navigate('/')
     }
 

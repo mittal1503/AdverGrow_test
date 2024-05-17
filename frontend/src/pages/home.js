@@ -2,19 +2,20 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import {useNavigate} from 'react-router-dom';
 import { useEffect } from 'react';
-import { useUser } from '../context/Usercontext';
 import axios from 'axios'
 import { Button } from '@mui/material';
-
-
+import { useDispatch,useSelector } from 'react-redux';
+import { setUser } from '../features/userSlice';
 export const Home = ()=> {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, setUser } = useUser();
+    const user = useSelector((state)=>state.users.user)
+  
    useEffect(()=>{
      const getUserData = ()=>{
         axios.get('https://jsonplaceholder.typicode.com/users').then((res)=>{
         const updatedArray = res.data.map(obj => ({ ...obj, status: "inactive" }));
-         setUser(updatedArray)
+         dispatch(setUser(updatedArray))
         }).catch((err)=>{
           console.log(err)
         })
@@ -22,7 +23,7 @@ export const Home = ()=> {
      if(!user.length){
      getUserData()
      }
-   },[user,setUser])
+   },[dispatch, user.length])
 
    console.log("user",user)
     const columns = [

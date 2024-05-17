@@ -1,26 +1,28 @@
-import { InputLabel, MenuItem, Select, TextField ,Typography,Box,Button, FormControl} from '@mui/material';
+import {  MenuItem, Select, TextField ,Box,Button } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import {useForm, Controller } from 'react-hook-form';
 import {useNavigate,useParams} from'react-router-dom';
 import { useUser } from '../context/Usercontext';
 import { styled } from '@mui/system';
+import { updateUser } from '../features/userSlice';
+import { useDispatch,useSelector } from 'react-redux';
 
 const Span = styled('span')({
   color: 'red'
 });
 
 export const Edituser = () => {
-    const { user, setUser } = useUser();
+  const user = useSelector((state)=>state.users.user)
+  const dispatch = useDispatch();
     const [userData, setUserData] = useState(null);
     const { id } = useParams(); 
+
     const{register,handleSubmit,formState:{errors},setValue, control} = useForm();
     const navigate = useNavigate();   
 
     useEffect(() => {
         const currentUser = user.find(u => u.id === parseInt(id));
-         console.log("statusss",register('status'),register('name'))
         if (currentUser) {
-            console.log("currentUser: " ,currentUser.status)
             setUserData(currentUser);
             setValue('name', currentUser.name);
             setValue('phone', currentUser.phone);
@@ -30,9 +32,7 @@ export const Edituser = () => {
     }, [id, user, setValue]);
 
     const onSubmit =(data)=>{
-        const updatedUser = { ...userData, ...data };
-        setUser(prevUsers => prevUsers.map(u => (u.id === parseInt(id) ? updatedUser : u)));
-        console.log("user",user)
+        dispatch(updateUser({id:id,newUser:{...data,id:parseInt(id)}}));
         navigate('/');
     }
     return (

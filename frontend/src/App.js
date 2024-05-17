@@ -1,16 +1,17 @@
-import './App.css';
-import { Router } from './router.js';
-import { createContext, useState } from 'react';
-import { UserProvider } from './context/Usercontext.js';
+import "./App.css";
+import { Router } from "./router.js";
+import { UserProvider } from "./context/Usercontext.js";
+import store from "./store.js";
+import { Provider } from "react-redux";
 function App() {
-  const [user,setUser] = useState([])
   return (
-   <>
- <UserProvider>
- <Router/>
- </UserProvider>
-   
-   </>
+    <>
+      <Provider store={store}>
+        <UserProvider>
+          <Router />
+        </UserProvider>
+      </Provider>
+    </>
   );
 }
 
